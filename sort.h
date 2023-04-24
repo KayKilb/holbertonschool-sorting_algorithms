@@ -3,7 +3,6 @@
 
 #include <stdio.h>
 #include <stdlib.h>
-#include <stddef.h>
 
 /**
  * struct listint_s - Doubly linked list node
@@ -19,7 +18,7 @@ typedef struct listint_s
 } listint_t;
 
 /* Given functions */
-void print_array(const int *array __attribute__((unused)), size_t size)
+void print_array(const int *array, size_t size)
 void print_list(const listint_t *list);
 
 /* Prototypes */
