@@ -1,4 +1,5 @@
 #include "sort.h"
+#include <stdio.h>
 /**
  * partition - partitions the array
  * @array: array to take in
@@ -7,62 +8,45 @@
  * @size: full size of array
  * Return: position of pivot
  */
-int partition(int *array, int start, int end, int size)
-{
-	int pivot = array[end];
-	int i = start, j, temp;
-
-	for (j = start; j < end; j++)
-	{
-		if (array[j] <= pivot)
-		{
-			if (i != j)
-			{
-				temp = array[i];
-				array[i] = array[j];
-				array[j] = temp;
-				print_array(array, size);
-			}
-			i++;
-		}
-	}
-	if (i != end)
-	{
-		temp = array[i];
-		array[i] = array[end];
-		array[end] = temp;
-		print_array(array, size);
-	}
-	return (i);
+void swap(int *a, int *b) {
+    int temp = *a;
+    *a = *b;
+    *b = temp;
 }
-/**
- * quickSort - quick sorts with recursion
- * @array: array to sort through
- * @start: start of array or subarray
- * @end: end of array or subarray
- * @size: size of full array
- */
-void quickSort(int *array, int start, int end, int size)
-{
-	int pivot;
 
-	if (start < end)
-	{
-		pivot = partition(array, start, end, size);
-		quickSort(array, start, pivot - 1, size);
-		printf("%d start %d pivot %d size\n", start, pivot - 1, size);
-		quickSort(array, pivot + 1, end, size);
-		printf("%d start %d pivot %d size\n", start, pivot + 1, size);
-	}
+int partition(int *array, int low, int high) {
+    int pivot = array[high];
+    int i = low - 1;
+
+    for (int j = low; j < high; j++) {
+        if (array[j] < pivot) {
+            i++;
+            swap(&array[i], &array[j]);
+            printf("Swapped elements: %d %d\n", array[i], array[j]);
+        }
+    }
+
+    swap(&array[i+1], &array[high]);
+    printf("Swapped elements: %d %d\n", array[i+1], array[high]);
+
+    return i+1;
 }
-/**
- * quick_sort - quick sorts an array
- * @array: array to sort
- * @size: size of array
- */
-void quick_sort(int *array, size_t size)
-{
-	if (array == NULL || size < 2)
-		return;
-	quickSort(array, 0, size - 1, size);
+
+void quick_sort(int *array, int low, int high) {
+    if (low < high) {
+        int p = partition(array, low, high);
+        quick_sort(array, low, p-1);
+        quick_sort(array, p+1, high);
+    }
+}
+
+void print_array(int *array, size_t size) {
+    printf("[");
+    for (int i = 0; i < size; i++) {
+        printf("%d", array[i]);
+        if (i != size-1) {
+            printf(", ");
+        }
+    }
+    printf("]\n");
 }
