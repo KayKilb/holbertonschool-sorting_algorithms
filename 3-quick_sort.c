@@ -1,52 +1,76 @@
 #include "sort.h"
-#include <stdio.h>
 /**
- * partition - partitions the array
- * @array: array to take in
- * @start: start of array;
- * @end: end of array
- * @size: full size of array
- * Return: position of pivot
+ * swap - swap integers
+ * @x: int
+ * @y: int
+ * Return: swapped
  */
-void swap(int *a, int *b) {
-    int temp = *a;
-    *a = *b;
-    *b = temp;
+void swap(int *x, int *y)
+{
+	int tmp;
+
+	tmp = *x;
+	*x = *y;
+	*y = tmp;
 }
 
-int partition(int *array, int low, int high) {
-    int pivot = array[high];
-    int i = low - 1;
+/**
+ * partition - partition pivot
+ * @array: array
+ * @start: int
+ * @end: int
+ * @size: size
+ * Return: index of pivot
+ */
+int partition(int *array, int start, int end, size_t size)
+{
+	int pivot_value = array[end];
+	int i = start - 1, j;
 
-    for (int j = low; j < high; j++) {
-        if (array[j] < pivot) {
-            i++;
-            swap(&array[i], &array[j]);
-            printf("Swapped elements: %d %d\n", array[i], array[j]);
-        }
-    }
+	for (j = start; j <= end; j++)
+	{
 
-    swap(&array[i+1], &array[high]);
-    printf("Swapped elements: %d %d\n", array[i+1], array[high]);
+	if (array[j] <= pivot_value)
+	{
+		i++;
 
-    return i+1;
+	if (i != j)
+	{
+		swap(&array[i], &array[j]);
+		print_array(array, size);
+	}
+	}
+	}
+	return (i);
 }
 
-void quick_sort(int *array, int low, int high) {
-    if (low < high) {
-        int p = partition(array, low, high);
-        quick_sort(array, low, p-1);
-        quick_sort(array, p+1, high);
-    }
+/**
+ * quicksort_recursion - sorts an array
+ * @array: aray
+ * @start: start
+ * @end: value of array
+ * @size: size of array
+ * Return: void
+ */
+void quicksort_recursion(int *array, int start, int end, size_t size)
+{
+	int x;
+
+	if (start < end)
+	{
+		x = partition(array, start, end, size);
+		quicksort_recursion(array, start, x - 1, size);
+		quicksort_recursion(array, x + 1, end, size);
+	}
 }
 
-void print_array(int *array, size_t size) {
-    printf("[");
-    for (int i = 0; i < size; i++) {
-        printf("%d", array[i]);
-        if (i != size-1) {
-            printf(", ");
-        }
-    }
-    printf("]\n");
+/**
+ * quick_sort - quick sort
+ * @array: array
+ * @size: size
+ * Return: sorted array
+ */
+void quick_sort(int *array, size_t size)
+{
+	quicksort_recursion(array, 0, size - 1, size);
 }
